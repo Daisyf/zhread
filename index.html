@@ -73,6 +73,8 @@ zip.workerScriptsPath = "/lib/";
 var parts = document.location.hash.slice(1).split('/');
 
 var file = parts[0];
+var file_name = file.split('.gz');
+file_name = file_name[0];
 var part = parseInt(parts[1]);
 var selectedIndex = 0;
 
@@ -338,7 +340,7 @@ function presentItem(path) {
   for (var i = 0; i < window.bookEntries.length; i++ ){
     console.log(window.bookEntries[i].filename, path);
     // We probably should read this relative path from somewhere
-    if (window.bookEntries[i].filename == 'OEBPS/' + path) {
+    if (window.bookEntries[i].filename == file_name + '/OEBPS/' + path) {
 
       // Read out HTML
       window.bookEntries[i].getData(new zip.TextWriter(), function(text) {
@@ -382,7 +384,7 @@ function loadBook() {
         reader.getEntries(function(entries) {
           window.bookEntries = entries;
           for (var i = 0; i < entries.length; i++ ){
-            if (entries[i].filename == 'OEBPS/content.opf') {
+            if (entries[i].filename == file_name + '/OEBPS/content.opf') {
               entries[i].getData(new zip.TextWriter(), function(text) {
                 parser = new DOMParser();
                 xmlDoc = parser.parseFromString(text,"text/xml");
